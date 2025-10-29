@@ -140,16 +140,11 @@
             </div>
             
             <div class="form-group">
-                <label for="phone" class="required">Контактные данные (телефон)</label>
-                <input type="tel" id="phone" name="phone" required 
+                <label for="phone">Контактные данные (телефон)</label>
+                <input type="tel" id="phone" name="phone" 
                        pattern="[\+]?[7-8]?[0-9\s\-\(\)]{10,}" 
                        placeholder="+7 (999) 123-45-67"
                        title="Введите номер телефона в формате +7 (XXX) XXX-XX-XX">
-            </div>
-            
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="example@mail.ru">
             </div>
             
             <div class="form-group">
@@ -164,19 +159,13 @@
             </div>
             
             <div class="form-group">
-                <label for="service" class="required">Услуга</label>
-                <select id="service" name="service" required>
-                    <option value="">Выберите услугу</option>
-                    <option value="консультация">Консультация</option>
-                    <option value="ремонт">Ремонт</option>
-                    <option value="обслуживание">Обслуживание</option>
-                    <option value="другое">Другое</option>
-                </select>
+                <label for="cabinet">Номер кабинета</label>
+                <input type="text" id="cabinet" name="cabinet" placeholder="Например: 105 или 2-й этаж">
             </div>
             
             <div class="form-group">
-                <label for="message">Сообщение</label>
-                <textarea id="message" name="message" placeholder="Опишите вашу проблему или вопрос..."></textarea>
+                <label for="message" class="required">Опишите проблему</label>
+                <textarea id="message" name="message" required placeholder="Подробно опишите проблему, которая требует решения..."></textarea>
             </div>
             
             <button type="submit" id="submitButton">Отправить заявку</button>
@@ -239,20 +228,14 @@
                 const formData = {
                     name: document.getElementById('name').value,
                     phone: phoneValue,
-                    email: document.getElementById('email').value,
                     platform: document.getElementById('platform').value,
-                    service: document.getElementById('service').value,
+                    cabinet: document.getElementById('cabinet').value,
                     message: document.getElementById('message').value
                 };
                 
                 // Валидация обязательных полей
-                if (!formData.name || !formData.phone || !formData.platform || !formData.service) {
+                if (!formData.name || !formData.platform || !formData.message) {
                     throw new Error('Заполните все обязательные поля');
-                }
-                
-                // Валидация телефона (минимум 11 цифр)
-                if (formData.phone.replace(/\D/g, '').length < 11) {
-                    throw new Error('Введите корректный номер телефона');
                 }
                 
                 // Отправляем данные
