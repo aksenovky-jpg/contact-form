@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форма заявки</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: bold;
+        }
+        
+        .required::after {
+            content: " *";
+            color: #e74c3c;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        
+        button {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+        
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📝 Форма заявки</h1>
+        
+        <div class="success-message" id="successMessage">
+            ✅ Заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.
+        </div>
+        
+        <div class="error-message" id="errorMessage">
+            ❌ Произошла ошибка при отправке. Пожалуйста, попробуйте еще раз.
+        </div>
+        
+        <form id="contactForm">
+            <div class="form-group">
+                <label for="name" class="required">ФИО</label>
+                <input type="text" id="name" name="name" required placeholder="Введите ваше полное имя">
+            </div>
+            
+            <div class="form-group">
+                <label for="phone" class="required">Контактные данные (телефон)</label>
+                <input type="tel" id="phone" name="phone" required 
+                       pattern="[\+]?[7-8]?[0-9\s\-\(\)]{10,}" 
+                       placeholder="+7 (999) 123-45-67"
+                       title="Введите номер телефона в формате +7 (XXX) XXX-XX-XX">
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="example@mail.ru">
+            </div>
+            
+            <div class="form-group">
+                <label for="platform" class="required">Площадка (Адрес)</label>
+                <select id="platform" name="platform" required>
+                    <option value="">Выберите площадку</option>
+                    <option value="Гвардейская 25">Гвардейская 25</option>
+                    <option value="Лермонтова 23">Лермонтова 23</option>
+                    <option value="Лермонтова 28">Лермонтова 28</option>
+                    <option value="Первого мая 3">Первого мая 3</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="service" class="required">Услуга</label>
+                <select id="service" name="service" required>
+                    <option value="">Выберите услугу</option>
+                    <option value="консультация">Консультация</option>
+                    <option value="ремонт">Ремонт</option>
+                    <option value="обслуживание">Обслуживание</option>
+                    <option value="другое">Другое</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="message">Сообщение</label>
+                <textarea id="message" name="message" placeholder="Опишите вашу проблему или вопрос..."></textarea>
+            </div>
+            
+            <button type="submit" id="submitButton">Отправить заявку</button>
+        </form>
+    </div>
+
+    <script>
+        // ЗАМЕНИТЕ ЭТОТ URL НА ВАШ URL СКРИПТА
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz2LbSVyxEOo5IvVAAtl0zkSP7VP-Vbjkyg3uFjyooJTIaLo9welBJvu8HcmgtMWP0c/exec';
+        
+        // Маска для телефона
+        function formatPhoneNumber(phone) {
+            return phone.replace(/\D/g, '') // Убираем все нецифровые символы
+                       .replace(/^(\d)/, '+$1') // Добавляем + в начало
+                       .replace(/(\+\d{1})(\d{3})(\d{3})(\d{2})(\d{2})/, '$1 ($2) $3-$4-$5');
+        }
+        
+        // Обработчик ввода телефона
+        document.getElementById('phone').addEventListener('input', function(e) {
+            let input = e.target.value.replace(/\D/g, '');
+            
+            if (input.startsWith('7') || input.startsWith('8')) {
+                input = '+7' + input.substring(1);
+            } else if (input.length > 0 && !input.startsWith('7') && !input.startsWith('8')) {
+                input = '+7' + input;
+            }
+            
+            // Форматируем номер
+            if (input.length > 2) {
+                let formatted = input.substring(0, 2) + ' ';
+                if (input.length > 2) formatted += '(' + input.substring(2, 5);
+                if (input.length > 5) formatted += ') ' + input.substring(5, 8);
+                if (input.length > 8) formatted += '-' + input.substring(8, 10);
+                if (input.length > 10) formatted += '-' + input.substring(10, 12);
+                e.target.value = formatted;
+            } else {
+                e.target.value = input;
+            }
+        });
+        
+        // Обработчик отправки формы
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitButton = document.getElementById('submitButton');
+            const originalText = submitButton.textContent;
+            
+            try {
+                // Показываем загрузку
+                submitButton.textContent = 'Отправка...';
+                submitButton.disabled = true;
+                
+                // Очищаем телефон от форматирования для отправки
+                let phoneValue = document.getElementById('phone').value.replace(/\D/g, '');
+                if (phoneValue.startsWith('7') || phoneValue.startsWith('8')) {
+                    phoneValue = '+7' + phoneValue.substring(1);
+                }
+                
+                // Собираем данные формы
+                const formData = {
+                    name: document.getElementById('name').value,
+                    phone: phoneValue,
+                    email: document.getElementById('email').value,
+                    platform: document.getElementById('platform').value,
+                    service: document.getElementById('service').value,
+                    message: document.getElementById('message').value
+                };
+                
+                // Валидация обязательных полей
+                if (!formData.name || !formData.phone || !formData.platform || !formData.service) {
+                    throw new Error('Заполните все обязательные поля');
+                }
+                
+                // Валидация телефона (минимум 11 цифр)
+                if (formData.phone.replace(/\D/g, '').length < 11) {
+                    throw new Error('Введите корректный номер телефона');
+                }
+                
+                // Отправляем данные
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.result === 'success') {
+                    // Показываем успех
+                    document.getElementById('successMessage').style.display = 'block';
+                    document.getElementById('errorMessage').style.display = 'none';
+                    
+                    // Очищаем форму
+                    this.reset();
+                    
+                    // Скрываем сообщение через 5 секунд
+                    setTimeout(() => {
+                        document.getElementById('successMessage').style.display = 'none';
+                    }, 5000);
+                    
+                } else {
+                    throw new Error(result.error);
+                }
+                
+            } catch (error) {
+                console.error('Ошибка:', error);
+                document.getElementById('errorMessage').textContent = '❌ ' + error.message;
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('successMessage').style.display = 'none';
+            } finally {
+                // Восстанавливаем кнопку
+                submitButton.textContent = originalText;
+                submitButton.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
